@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate: AnyObject {
+    func didLogin()
+}
+
 class LoginViewController: UIViewController {
     
     let stackView = UIStackView()
@@ -17,6 +21,8 @@ class LoginViewController: UIViewController {
     let errorMessageLabel = UILabel()
     
     let spacing: CGFloat = 8
+    
+    weak var delegate: LoginViewControllerDelegate?
     
     var username: String? {
         return loginView.usernameTextField.text
@@ -100,6 +106,7 @@ extension LoginViewController {
         
         if username == "Koo" && password == "134682" {
             signInButton.configuration?.showsActivityIndicator = true
+            delegate?.didLogin()
         } else {
             configureErrorLabel(withMessage: "사용자 이름과 비밀번호를 확인하세요.")
         }
