@@ -22,6 +22,8 @@ class OnboardingContainerViewController: UIViewController {
     var pages: [UIViewController] = []
     var currentVC: UIViewController
     
+    var currentIndex: Int = 0
+    
     weak var delegate: OnboardingContainerViewControllerDelegate?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -87,15 +89,17 @@ class OnboardingContainerViewController: UIViewController {
         //BackButton
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.setTitle("Back", for: [])
-        backButton.addTarget(self, action: #selector(closeTapped), for: .primaryActionTriggered)
-        //BackButton
+        backButton.addTarget(self, action: #selector(prevTapped), for: .primaryActionTriggered)
+        //nextButton
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.setTitle("Next", for: [])
-        nextButton.addTarget(self, action: #selector(closeTapped), for: .primaryActionTriggered)
-        //BackButton
+        nextButton.addTarget(self, action: #selector(nextTapped), for: .primaryActionTriggered)
+        //doneButton
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.setTitle("Done", for: [])
         doneButton.addTarget(self, action: #selector(closeTapped), for: .primaryActionTriggered)
+        
+        setButtonVisible(fromIndex: 0)
     }
     
     private func layout() {
@@ -129,6 +133,27 @@ class OnboardingContainerViewController: UIViewController {
         ])
     }
     
+    private func setButtonVisible(fromIndex index: Int) {
+        backButton.isHidden = true
+        nextButton.isHidden = true
+        doneButton.isHidden = true
+        if index == 0 {
+            nextButton.isHidden = false
+        } else if index == pages.count - 1 {
+            backButton.isHidden = false
+            doneButton.isHidden = false
+        } else {
+            nextButton.isHidden = false
+            backButton.isHidden = false
+        }
+    }
+    
+    private func setViewController(fromIndex index: Int, direction: UIPageViewController.NavigationDirection) {
+        pageViewController.setViewControllers([pages[index]], direction: direction, animated: true)
+        pageViewController.pageControl?.currentPage = index
+        setButtonVisible(fromIndex: index)
+        currentIndex = index
+    }
 
 }
 
@@ -168,10 +193,10 @@ extension OnboardingContainerViewController: UIPageViewControllerDataSource {
 // MARK: -UIPageViewDelegate
 extension OnboardingContainerViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        let vc = previousViewControllers[0] as! OnboardingViewController
-        print(vc.text
-        )
-        print(previousViewControllers)
+        guard let vc = pageViewController.viewControllers?.first else {return}
+        guard let index = pages.firstIndex(of: vc) else {return}
+        currentIndex = index
+        setButtonVisible(fromIndex: index)
     }
 }
 
@@ -180,5 +205,24 @@ extension OnboardingContainerViewController {
     @objc func closeTapped() {
         delegate?.didFinishOnboarding()
     }
+    @objc func nextTapped() {
+        let nextIndex = currentIndex + 1
+        setViewController(fromIndex: nextIndex, direction: .forward)
+    }
+    @objc func prevTapped() {
+        let prevIndex = currentIndex - 1
+        setViewController(fromIndex: prevIndex, direction: .reverse)
+        pageViewController.pageControl?.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+    }
 }
 
+extension UIPageViewController {
+    var pageControl: UIPageControl? {
+        for view in view.subviews {
+            if view is UIPageControl {
+                return view as? UIPageControl
+            }
+        }
+    return nil
+    }
+}
