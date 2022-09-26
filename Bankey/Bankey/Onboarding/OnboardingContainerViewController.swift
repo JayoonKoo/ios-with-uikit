@@ -212,7 +212,6 @@ extension OnboardingContainerViewController {
     @objc func prevTapped() {
         let prevIndex = currentIndex - 1
         setViewController(fromIndex: prevIndex, direction: .reverse)
-        pageViewController.pageControl?.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
     }
 }
 
