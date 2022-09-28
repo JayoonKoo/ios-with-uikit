@@ -32,13 +32,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - LoginViewControllerDelegate
 extension AppDelegate: LoginViewControllerDelegate {
     func didLogin() {
-        setRootViewController(onboardingContainerVC)
+        let hasOnboarded = LocalState.hasOnboarded
+        if hasOnboarded {
+            setRootViewController(dummyVC)
+        } else {
+            setRootViewController(onboardingContainerVC)
+        }
     }
 }
 
 // MARK: - OnboardingContainerVCDelegate
 extension AppDelegate: OnboardingContainerViewControllerDelegate {
     func didFinishOnboarding() {
+        LocalState.hasOnboarded = true
         setRootViewController(dummyVC)
     }
 }
