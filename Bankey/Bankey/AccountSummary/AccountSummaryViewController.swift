@@ -29,6 +29,8 @@ extension AccountSummaryViewController {
     func setup() {
         tableView.dataSource = self
         tableView.delegate = self
+        
+        setTableViewHeader()
     }
     func style() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,6 +45,15 @@ extension AccountSummaryViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
+    }
+    
+    private func setTableViewHeader() {
+        let header = AccountSummaryHeaderView()
+                
+        header.frame.size.height = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        
+        tableView.tableHeaderView = header
     }
 }
 

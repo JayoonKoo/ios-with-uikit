@@ -78,3 +78,15 @@ extension AppDelegate {
             completion: nil)
     }
 }
+
+extension UIView {
+    func addSubViews(_ subViews: [UIView]) {
+        subViews.forEach { addSubview($0) }
+    }
+}
+
+extension UIStackView {
+    func addArrangedSubViews(_ subViews: [UIView]) {
+        subViews.forEach { addArrangedSubview($0) }
+    }
+}
