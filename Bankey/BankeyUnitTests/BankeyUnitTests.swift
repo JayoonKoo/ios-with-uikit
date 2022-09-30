@@ -5,31 +5,39 @@
 //  Created by 구자윤 on 2022/09/30.
 //
 
+import UIKit
+import Foundation
 import XCTest
 
+@testable import Bankey
+
 class BankeyUnitTests: XCTestCase {
+    
+    var formatter: CurrencyFormatter!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() {
+        super.setUp()
+        formatter = CurrencyFormatter()
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testBreakDollarsIntoCents() throws {
+        let result = formatter.breakDollarsIntoCents(balnce: 12345.23)
+        XCTAssertEqual(result.0, "12,345")
+        XCTAssertEqual(result.1, "23")
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testConvertDollar() throws {
+        let result = formatter.convertDollar(12345.00)
+        XCTAssertEqual(result, "12,345")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testConvertCents() throws {
+        let result = formatter.convertCents(0.123)
+        XCTAssertEqual(result, "12")
     }
-
+    
+    func testZeroConvertCents() throws {
+        let result = formatter.convertCents(0.00)
+        XCTAssertEqual(result, "00")
+    }
 }
