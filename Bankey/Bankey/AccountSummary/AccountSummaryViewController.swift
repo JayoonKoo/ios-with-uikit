@@ -9,13 +9,18 @@ import UIKit
 
 class AccountSummaryViewController: UIViewController {
     
-    let data = [
-        "구자윤",
-        "개발",
-        "기록"
-    ]
-    
     let tableView = UITableView()
+    
+    var viewModel: AccountViewModel? = nil
+    
+    init(viewModel: AccountViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +36,13 @@ extension AccountSummaryViewController {
         tableView.delegate = self
         
         setTableViewHeader()
+        setupTable()
+        viewModel?.fetchData()
     }
+    
     func style() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = appColor
     }
     
     func layout() {
@@ -50,29 +59,36 @@ extension AccountSummaryViewController {
     
     private func setTableViewHeader() {
         let header = AccountSummaryHeaderView()
-                
         header.frame.size.height = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        
         tableView.tableHeaderView = header
+    }
+    
+    private func setupTable() {
+        tableView.register(AccountSummaryCell.self, forCellReuseIdentifier: AccountSummaryCell.reuseID)
+        tableView.rowHeight = AccountSummaryCell.rowHeight
+        tableView.tableFooterView = UIView()
     }
 }
 
 // MARK: tableViewDelegate
 extension AccountSummaryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(data[indexPath.row])
+        guard let account = viewModel?.getAccountSummaryCellData(by: indexPath) else {return}
+        print(account.accountName)
     }
 }
 
 // MARK: talbeBiewDatasource
 extension AccountSummaryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return viewModel?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = data[indexPath.row]
+        guard let viewModel = viewModel, let cell = tableView.dequeueReusableCell(withIdentifier: AccountSummaryCell.reuseID, for: indexPath) as? AccountSummaryCell else {
+            return UITableViewCell()
+        }
+        cell.account = viewModel.getAccountSummaryCellData(by: indexPath)
         return cell
     }
 }

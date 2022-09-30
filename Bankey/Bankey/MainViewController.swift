@@ -12,7 +12,8 @@ class MainViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let VC1 = DummyVC1()
+        let accountViewModel = AccountViewModel()
+        let VC1 = AccountSummaryViewController(viewModel: accountViewModel)
         let VC2 = DummyVC2()
         let VC3 = DummyVC3()
         
@@ -33,6 +34,7 @@ class MainViewController: UITabBarController {
 extension MainViewController {
     func setup() {
         setupTabBar()
+    
     }
     
     func style() {
