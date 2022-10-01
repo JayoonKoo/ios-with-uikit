@@ -24,6 +24,12 @@ class LoginViewController: UIViewController {
     let signInButton = UIButton(type: .system)
     let errorMessageLabel = UILabel()
     
+    var titleLeadingConstraint: NSLayoutConstraint?
+    var subTitleLeadingConstraint: NSLayoutConstraint?
+    
+    let viewInLeading: CGFloat = 16
+    let viewOutLeading: CGFloat = -1000
+    
     let spacing: CGFloat = 8
     
     weak var delegate: LoginViewControllerDelegate?
@@ -45,6 +51,10 @@ class LoginViewController: UIViewController {
         super.viewDidDisappear(animated)
         signInButton.configuration?.showsActivityIndicator = false
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        animation()
+    }
 }
 
 extension LoginViewController {
@@ -58,6 +68,7 @@ extension LoginViewController {
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.text = "Bankey"
+        titleLabel.alpha = 0
         
         subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subTitleLabel.textAlignment = .center
@@ -80,17 +91,33 @@ extension LoginViewController {
     }
     
     private func layout() {
-        view.addSubview(stackView)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(subTitleLabel)
-        stackView.addArrangedSubview(loginView)
-        stackView.addArrangedSubview(signInButton)
-        stackView.addArrangedSubview(errorMessageLabel)
+        view.addSubViews([titleLabel, subTitleLabel, stackView])
+        stackView.addArrangedSubViews([loginView, signInButton, errorMessageLabel])
         
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 2)
+        ])
+        titleLeadingConstraint = titleLabel.leadingAnchor.constraint(
+            equalTo: view.leadingAnchor,
+            constant: viewOutLeading)
+        titleLeadingConstraint?.isActive = true
+        
+        
+        NSLayoutConstraint.activate([
+            subTitleLabel.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: subTitleLabel.trailingAnchor, multiplier: 2),
+        ])
+        subTitleLeadingConstraint = subTitleLabel.leadingAnchor.constraint(
+            equalTo: view.leadingAnchor,
+            constant: viewOutLeading)
+        subTitleLeadingConstraint?.isActive = true
+
+        
+        NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 1)
+            stackView.topAnchor.constraint(equalToSystemSpacingBelow: subTitleLabel.bottomAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 1),
+            stackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
         ])
     }
 }
@@ -127,4 +154,27 @@ extension LoginViewController {
     }
 }
 
-
+// MARK: Animation
+extension LoginViewController {
+    func animation() {
+        let duration = 1.0
+        let animation1 = UIViewPropertyAnimator(duration: duration, curve: .easeInOut) {
+            self.titleLeadingConstraint?.constant = self.viewInLeading
+            self.view.layoutIfNeeded()
+        }
+        animation1.startAnimation()
+        
+        let animation2 = UIViewPropertyAnimator(duration: duration, curve: .easeInOut) {
+            self.subTitleLeadingConstraint?.constant = self.viewInLeading
+            self.view.layoutIfNeeded()
+        }
+        animation2.startAnimation(afterDelay: 0.2)
+        
+        let animation3 = UIViewPropertyAnimator(duration: duration * 2, curve: .easeInOut) {
+            self.titleLabel.alpha = 1
+            self.view.layoutIfNeeded()
+        }
+        animation3.startAnimation(afterDelay: 0.2)
+        
+    }
+}
