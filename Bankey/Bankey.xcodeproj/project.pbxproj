@@ -25,6 +25,7 @@
 		F3DF345E28E7159D00237AA5 /* BankeyUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DF345D28E7159D00237AA5 /* BankeyUnitTests.swift */; };
 		F3DF346728E71DBE00237AA5 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DF346628E71DBE00237AA5 /* AccountModel.swift */; };
 		F3DF346928E71E9500237AA5 /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DF346828E71E9500237AA5 /* AccountViewModel.swift */; };
+		F3DF346B28E7F98C00237AA5 /* NSNotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DF346A28E7F98C00237AA5 /* NSNotificationName.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		F3DF345D28E7159D00237AA5 /* BankeyUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankeyUnitTests.swift; sourceTree = "<group>"; };
 		F3DF346628E71DBE00237AA5 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		F3DF346828E71E9500237AA5 /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
+		F3DF346A28E7F98C00237AA5 /* NSNotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNotificationName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				F3DF344828E48E4100237AA5 /* LocalState.swift */,
 				F3DF344C28E4924500237AA5 /* UIViewController+Utils.swift */,
 				F3DF345528E714CF00237AA5 /* CurrencyFormatter.swift */,
+				F3DF346A28E7F98C00237AA5 /* NSNotificationName.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				F3DF344928E48E4100237AA5 /* LocalState.swift in Sources */,
 				F3DF344D28E4924500237AA5 /* UIViewController+Utils.swift in Sources */,
 				F3DF345228E49BA800237AA5 /* AccountSummaryHeaderView.swift in Sources */,
+				F3DF346B28E7F98C00237AA5 /* NSNotificationName.swift in Sources */,
 				F3DF344628E201C600237AA5 /* DummyViewController.swift in Sources */,
 				F3DF344428E06CDC00237AA5 /* OnboardingViewController.swift in Sources */,
 				F3DF345628E714CF00237AA5 /* CurrencyFormatter.swift in Sources */,
