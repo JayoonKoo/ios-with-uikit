@@ -39,6 +39,7 @@ extension LoginView {
         passwordTextField.placeholder = "Password"
         passwordTextField.isSecureTextEntry = true
         passwordTextField.delegate = self
+        passwordTextField.enablePasswordToggle()
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
