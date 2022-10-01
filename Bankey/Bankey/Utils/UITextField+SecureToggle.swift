@@ -12,6 +12,7 @@ let passwordToggleButton = UIButton(type: .custom)
 
 extension UITextField {
     func enablePasswordToggle() {
+        clearsOnBeginEditing = false
         passwordToggleButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
         passwordToggleButton.setImage(UIImage(systemName: "eye.slash.fill"), for: .selected)
         passwordToggleButton.addTarget(self, action: #selector(togglePasswordView), for: .touchUpInside)
@@ -19,9 +20,15 @@ extension UITextField {
         rightViewMode = .always
     }
     
-    // TODO: toggle 할때 전체 다 지워지는것 수정하기
     @objc func togglePasswordView(_ sender: UIButton) {
+        // 보안 모드로 전환 될때
         sender.isSelected.toggle()
         isSecureTextEntry.toggle()
+        if let existingText = text, isSecureTextEntry {
+            deleteBackward()
+            if let textRange = textRange(from: beginningOfDocument, to: endOfDocument) {
+                replace(textRange, withText: existingText)
+            }
+        }
     }
 }
