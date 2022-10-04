@@ -137,7 +137,7 @@ extension LoginViewController {
         
         if username.isEmpty || password.isEmpty {
             configureErrorLabel(withMessage: "사용자 이름과 비밀번호를 입력해주세요.")
-            return 
+            return
         }
         
         if username == "Koo" && password == "134682" {
@@ -151,6 +151,7 @@ extension LoginViewController {
     private func configureErrorLabel(withMessage message: String) {
         errorMessageLabel.text = message
         errorMessageLabel.isHidden = false
+        shakeSignInButton()
     }
 }
 
@@ -175,6 +176,17 @@ extension LoginViewController {
             self.view.layoutIfNeeded()
         }
         animation3.startAnimation(afterDelay: 0.2)
+    }
+    
+    func shakeSignInButton() {
+        let animation = CAKeyframeAnimation()
         
+        animation.keyPath = "position.x"
+        animation.values = [0, 10, -10, 10, 0]
+        animation.keyTimes = [0, 0.16, 0.53, 0.86, 1]
+        animation.duration = 0.4
+        
+        animation.isAdditive = true
+        signInButton.layer.add(animation, forKey: "Shake")
     }
 }

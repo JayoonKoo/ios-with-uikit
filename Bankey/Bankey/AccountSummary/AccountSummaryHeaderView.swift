@@ -20,6 +20,7 @@ class AccountSummaryHeaderView: UIView {
     
     let imageViewContainer = UIView()
     let imageView = UIImageView()
+    let shakeBell = ShakeBellView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,12 +85,14 @@ extension AccountSummaryHeaderView {
         imageView.tintColor = .systemYellow
         imageView.contentMode = .scaleAspectFit
 
+        // shakshakeBell
+        shakeBell.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func layout() {
         addSubview(contentView)
         
-        contentView.addSubview(containerHStack)
+        contentView.addSubViews([containerHStack, shakeBell])
         imageViewContainer.addSubview(imageView)
         containerHStack.addArrangedSubViews([accountLabelVStack, imageViewContainer])
         accountLabelVStack.addArrangedSubViews([titleLabel, greetingLabel, nameLabel, dateLabel])
@@ -122,6 +125,13 @@ extension AccountSummaryHeaderView {
             imageView.centerXAnchor.constraint(equalTo: imageViewContainer.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: imageViewContainer.centerYAnchor),
         ])
+        
+        // shakeBell
+        NSLayoutConstraint.activate([
+            shakeBell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            shakeBell.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+        ])
+
 
 
     }
